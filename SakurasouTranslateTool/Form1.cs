@@ -5,11 +5,15 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
+using System.Data;
 
 namespace SakurasouTranslateTool
 {
     public partial class Form1 : Form
     {
+        DataTable dataTable = new DataTable();
+        string filename = "";
+
         public Form1()
         {
             InitializeComponent();
@@ -18,9 +22,20 @@ namespace SakurasouTranslateTool
             typeof(DataGridView).InvokeMember("DoubleBuffered",
             BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic,
             null, dataGridViewStrings, new object[] { true });
-        }
+            
+            dataTable.Columns.Add("Pointer offset", typeof(int));
+            dataTable.Columns.Add("Text", typeof(string));
 
-        string filename = "";
+            dataGridViewStrings.DataSource = dataTable;
+
+            dataGridViewStrings.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            dataGridViewStrings.Columns[0].SortMode = DataGridViewColumnSortMode.NotSortable;
+            dataGridViewStrings.Columns[0].Width = 80;
+            dataGridViewStrings.Columns[0].ReadOnly = true;
+
+            dataGridViewStrings.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dataGridViewStrings.Columns[1].SortMode = DataGridViewColumnSortMode.NotSortable;
+        }
 
         private void buttonExtract_Click(object sender, EventArgs e)
         {
@@ -55,7 +70,7 @@ namespace SakurasouTranslateTool
                     return;
                 }
 
-                dataGridViewStrings.Rows.Clear();
+                dataTable.Rows.Clear();
 
                 for (int i = 0; i < myReader.BaseStream.Length; i += 4)
                 {
@@ -84,7 +99,7 @@ namespace SakurasouTranslateTool
                         if (myString.StartsWith(" END   : ") | myString.StartsWith("\n★★★\n★★★"))
                             break;
 
-                        dataGridViewStrings.Rows.Add(i.ToString(), myString.Replace("\n","__"));
+                        dataTable.Rows.Add(i.ToString(), myString.Replace("\n","__"));
                     }                 
                 }
             }
@@ -100,18 +115,18 @@ namespace SakurasouTranslateTool
 
             using (BinaryWriter myWriter = new BinaryWriter(File.Open(filename, FileMode.Open)))
             {
-                for (int i = 0; i < dataGridViewStrings.Rows.Count; i++)
+                for (int i = 0; i < dataTable.Rows.Count; i++)
                 {
-                    int pointerOffset = Int32.Parse(dataGridViewStrings.Rows[i].Cells[0].Value?.ToString());
-                    byte[] newPointer = BitConverter.GetBytes(Convert.ToUInt32(myWriter.BaseStream.Length / 4));
+                    int pointerOffset = (int)dataTable.Rows[i][0];
+                    byte[] newPointer = BitConverter.GetBytes((UInt32)(myWriter.BaseStream.Length / 4));
                     myWriter.Seek(pointerOffset, SeekOrigin.Begin);
                     myWriter.Write(newPointer, 0, newPointer.Length);
 
-                    string newText = dataGridViewStrings.Rows[i].Cells[1].Value?.ToString().Replace("__", "\n");
+                    string newText = (string)dataTable.Rows[i][1];
                     myWriter.Seek(0, SeekOrigin.End);
                     myWriter.Write(Encoding.UTF8.GetBytes(newText));
 
-                    int nullCount = 4 - (Convert.ToInt32(myWriter.BaseStream.Length) % 4);
+                    int nullCount = 4 - ((int)myWriter.BaseStream.Length % 4);
                     byte[] nulls = new byte[] {0x00, 0x00, 0x00, 0x00 };
                     myWriter.Write(nulls, 0, nullCount);
 
@@ -132,10 +147,10 @@ namespace SakurasouTranslateTool
 
                 if (mySaveFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    string[] myStrings = new string[dataGridViewStrings.Rows.Count];
+                    string[] myStrings = new string[dataTable.Rows.Count];
                     for (int i = 0; i < myStrings.Length; i++)
                     {
-                        myStrings[i] = dataGridViewStrings.Rows[i].Cells[1].Value?.ToString();
+                        myStrings[i] = (string)dataTable.Rows[i][1];
                     }
                     File.WriteAllLines(mySaveFileDialog.FileName, myStrings);
                 }
@@ -156,7 +171,7 @@ namespace SakurasouTranslateTool
                     string[] myStrings = File.ReadAllLines(myOpenFileDialog.FileName);
                     for (int i = 0; i < myStrings.Length; i++)
                     {
-                        dataGridViewStrings.Rows[i].Cells[1].Value = myStrings[i];
+                        dataTable.Rows[i][1] = myStrings[i];
                     }
                 }
             }

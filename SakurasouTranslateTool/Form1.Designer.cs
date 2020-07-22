@@ -32,12 +32,10 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.buttonExtract = new System.Windows.Forms.Button();
             this.dataGridViewStrings = new System.Windows.Forms.DataGridView();
-            this.buttonPatch = new System.Windows.Forms.Button();
             this.contextMenuStripStrings = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.itemExport = new System.Windows.Forms.ToolStripMenuItem();
             this.itemImport = new System.Windows.Forms.ToolStripMenuItem();
-            this.ColumnPointer = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnText = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.buttonPatch = new System.Windows.Forms.Button();
             this.labelCurrentFile = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewStrings)).BeginInit();
             this.contextMenuStripStrings.SuspendLayout();
@@ -63,27 +61,12 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dataGridViewStrings.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewStrings.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.ColumnPointer,
-            this.ColumnText});
             this.dataGridViewStrings.ContextMenuStrip = this.contextMenuStripStrings;
             this.dataGridViewStrings.Location = new System.Drawing.Point(1, 0);
             this.dataGridViewStrings.Name = "dataGridViewStrings";
             this.dataGridViewStrings.RowHeadersVisible = false;
             this.dataGridViewStrings.Size = new System.Drawing.Size(557, 488);
             this.dataGridViewStrings.TabIndex = 1;
-            // 
-            // buttonPatch
-            // 
-            this.buttonPatch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.buttonPatch.Enabled = false;
-            this.buttonPatch.Location = new System.Drawing.Point(106, 494);
-            this.buttonPatch.Name = "buttonPatch";
-            this.buttonPatch.Size = new System.Drawing.Size(96, 36);
-            this.buttonPatch.TabIndex = 2;
-            this.buttonPatch.Text = "Patch";
-            this.buttonPatch.UseVisualStyleBackColor = true;
-            this.buttonPatch.Click += new System.EventHandler(this.buttonPatch_Click);
             // 
             // contextMenuStripStrings
             // 
@@ -107,23 +90,17 @@
             this.itemImport.Text = "Import strings...";
             this.itemImport.Click += new System.EventHandler(this.itemImport_Click);
             // 
-            // ColumnPointer
+            // buttonPatch
             // 
-            this.ColumnPointer.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.None;
-            this.ColumnPointer.FillWeight = 101.5228F;
-            this.ColumnPointer.HeaderText = "Pointer offset";
-            this.ColumnPointer.Name = "ColumnPointer";
-            this.ColumnPointer.ReadOnly = true;
-            this.ColumnPointer.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.ColumnPointer.Width = 80;
-            // 
-            // ColumnText
-            // 
-            this.ColumnText.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.ColumnText.FillWeight = 98.47716F;
-            this.ColumnText.HeaderText = "Text";
-            this.ColumnText.Name = "ColumnText";
-            this.ColumnText.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.buttonPatch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.buttonPatch.Enabled = false;
+            this.buttonPatch.Location = new System.Drawing.Point(106, 494);
+            this.buttonPatch.Name = "buttonPatch";
+            this.buttonPatch.Size = new System.Drawing.Size(96, 36);
+            this.buttonPatch.TabIndex = 2;
+            this.buttonPatch.Text = "Patch";
+            this.buttonPatch.UseVisualStyleBackColor = true;
+            this.buttonPatch.Click += new System.EventHandler(this.buttonPatch_Click);
             // 
             // labelCurrentFile
             // 
@@ -165,8 +142,6 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStripStrings;
         private System.Windows.Forms.ToolStripMenuItem itemExport;
         private System.Windows.Forms.ToolStripMenuItem itemImport;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnPointer;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColumnText;
         private System.Windows.Forms.Label labelCurrentFile;
     }
 }
