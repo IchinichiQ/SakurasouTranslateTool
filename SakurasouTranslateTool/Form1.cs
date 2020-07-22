@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 
@@ -12,6 +13,11 @@ namespace SakurasouTranslateTool
         public Form1()
         {
             InitializeComponent();
+
+            //Remove lagging of DataGridView when resizing a form
+            typeof(DataGridView).InvokeMember("DoubleBuffered",
+            BindingFlags.SetProperty | BindingFlags.Instance | BindingFlags.NonPublic,
+            null, dataGridViewStrings, new object[] { true });
         }
 
         string filename = "";
