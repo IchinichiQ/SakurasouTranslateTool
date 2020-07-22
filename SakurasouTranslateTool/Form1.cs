@@ -123,6 +123,7 @@ namespace SakurasouTranslateTool
                     myWriter.Write(newPointer, 0, newPointer.Length);
 
                     string newText = (string)dataTable.Rows[i][1];
+                    newText = newText.Replace("__", "\n");
                     myWriter.Seek(0, SeekOrigin.End);
                     myWriter.Write(Encoding.UTF8.GetBytes(newText));
 
