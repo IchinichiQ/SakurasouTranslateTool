@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 using System.Data;
+using System.Diagnostics;
 
 namespace SakurasouTranslateTool
 {
@@ -49,14 +50,17 @@ namespace SakurasouTranslateTool
             else
                 return;
 
+            labelCurrentFile.Text = "Loading...";
+            labelCurrentFile.Update();
+
             using (BinaryReader myReader = new BinaryReader(File.Open(filename, FileMode.Open)))
             {
                 int textOffset = -1;
-                for (int i = 0; i < myReader.BaseStream.Length; i += 4)
+                for (int i = 0; i < myReader.BaseStream.Length; i += 30)
                 {
                     myReader.BaseStream.Seek(i, SeekOrigin.Begin);
-                    byte[] chunk = myReader.ReadBytes(35);
-                    byte[] sample = { 0x2D, 0x2D, 0x2D, 0x2D, 0x2D, 0x2D, 0x2D, 0x2D, 0x2D, 0x2D, 0x2D, 0x2D, 0x2D, 0x2D, 0x2D, 0x2D, 0x2D, 0x2D, 0x2D, 0x2D, 0x2D, 0x2D, 0x2D, 0x2D, 0x2D, 0x2D, 0x2D, 0x2D, 0x2D, 0x2D, 0x2D, 0x2D, 0x2D, 0x2D, 0x2D };
+                    byte[] chunk = myReader.ReadBytes(5);
+                    byte[] sample = { 0x2D, 0x2D, 0x2D, 0x2D, 0x2D};
                     if (chunk.SequenceEqual(sample))
                     {
                         textOffset = i;
@@ -71,8 +75,9 @@ namespace SakurasouTranslateTool
                 }
 
                 dataTable.Rows.Clear();
+                dataTable.BeginLoadData();
 
-                for (int i = 0; i < myReader.BaseStream.Length; i += 4)
+                for (int i = 0; i < textOffset; i += 4)
                 {
                     myReader.BaseStream.Seek(i, SeekOrigin.Begin);
                     byte[] chunk = myReader.ReadBytes(4);
@@ -99,11 +104,12 @@ namespace SakurasouTranslateTool
                         if (myString.StartsWith(" END   : ") | myString.StartsWith("\n★★★\n★★★"))
                             break;
 
-                        dataTable.Rows.Add(i.ToString(), myString.Replace("\n","__"));
+                        dataTable.Rows.Add(i, myString.Replace("\n","__"));
                     }                 
                 }
             }
 
+            dataTable.EndLoadData();
             labelCurrentFile.Text = Path.GetFileName(filename);
             buttonPatch.Enabled = true;
         }

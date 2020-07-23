@@ -109,6 +109,7 @@
             this.labelCurrentFile.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.labelCurrentFile.Location = new System.Drawing.Point(215, 497);
             this.labelCurrentFile.Name = "labelCurrentFile";
+            this.labelCurrentFile.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.labelCurrentFile.Size = new System.Drawing.Size(332, 30);
             this.labelCurrentFile.TabIndex = 4;
             this.labelCurrentFile.Text = "None";
