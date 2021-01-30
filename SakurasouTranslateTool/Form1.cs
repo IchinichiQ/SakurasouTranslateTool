@@ -6,7 +6,6 @@ using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
 using System.Data;
-using System.Diagnostics;
 
 namespace SakurasouTranslateTool
 {
@@ -71,6 +70,7 @@ namespace SakurasouTranslateTool
                 if (textOffset == -1)
                 {
                     MessageBox.Show("Text not found!", "STT", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    labelCurrentFile.Text = "None";
                     return;
                 }
 
@@ -136,9 +136,8 @@ namespace SakurasouTranslateTool
                     int nullCount = 4 - ((int)myWriter.BaseStream.Length % 4);
                     byte[] nulls = new byte[] {0x00, 0x00, 0x00, 0x00 };
                     myWriter.Write(nulls, 0, nullCount);
-
-                    myWriter.Flush();
                 }
+                myWriter.Flush();
             }
             MessageBox.Show("Done", "STT", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
